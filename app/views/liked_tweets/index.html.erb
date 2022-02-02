@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Liked tweets</h1>
+
+<div id="liked_tweets">
+  <% @liked_tweets.each do |liked_tweet| %>
+    <%= render liked_tweet %>
+    <p>
+      <%= link_to "Show this liked tweet", liked_tweet %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New liked tweet", new_liked_tweet_path %>

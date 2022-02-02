@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @liked_tweet %>
+
+<div>
+  <%= link_to "Edit this liked tweet", edit_liked_tweet_path(@liked_tweet) %> |
+  <%= link_to "Back to liked tweets", liked_tweets_path %>
+
+  <%= button_to "Destroy this liked tweet", @liked_tweet, method: :delete %>
+</div>
