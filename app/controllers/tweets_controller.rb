@@ -1,6 +1,6 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: %i[show edit update destroy]
-
+  before_action :authenticate_user!, except: %i[index show]
   # GET /tweets
   def index
     @tweets = Tweet.all
@@ -12,6 +12,7 @@ class TweetsController < ApplicationController
   # GET /tweets/new
   def new
     @tweet = Tweet.new
+    @parent_tweet = Tweet.find(params['tweet_id']) if params['tweet_id']
   end
 
   # GET /tweets/1/edit
@@ -20,9 +21,16 @@ class TweetsController < ApplicationController
   # POST /tweets
   def create
     @tweet = Tweet.new(tweet_params)
+    p '####################################'
+    p params
+    p tweet_params
+    p '####################################'
+    @tweet.parent_id = params['tweet_id'] if params['tweet_id']
+
+    @tweet.user = current_user
 
     if @tweet.save
-      redirect_to @tweet, notice: 'Tweet was successfully created.'
+      redirect_to root_path, notice: 'Tweet was successfully created.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -54,6 +62,6 @@ class TweetsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def tweet_params
-    params.require(:tweet).permit(:body, :tweets_count, :likes_count, :user_id)
+    params.require(:tweet).permit(:body)
   end
 end

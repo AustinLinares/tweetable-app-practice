@@ -3,8 +3,11 @@
 <%= render @tweet %>
 
 <div>
-  <%= link_to "Edit this tweet", edit_tweet_path(@tweet) %> |
   <%= link_to "Back to tweets", tweets_path %>
+  <% if user_signed_in? && current_user.id == @tweet.user_id %>
+  <%= link_to "Edit this tweet", edit_tweet_path(@tweet) %> |
+  
 
-  <%= button_to "Destroy this tweet", tweets_path, data: { turbo_method: :delete }%>
+  <%= button_to "Destroy this tweet", tweet_path(@tweet), method: :delete, "data-turbo":"false" %>
+  <% end %>
 </div>
