@@ -6,5 +6,5 @@
   <%= link_to "Edit this tweet", edit_tweet_path(@tweet) %> |
   <%= link_to "Back to tweets", tweets_path %>
 
-  <%= button_to "Destroy this tweet", @tweet, method: :delete %>
+  <%= button_to "Destroy this tweet", tweets_path, data: { turbo_method: :delete }%>
 </div>
