@@ -1,7 +1,10 @@
 <h1>New tweet</h1>
 
+<%if @parent_tweet%>
+  <%= render "form2", parent_tweet: @parent_tweet, tweet: @tweet %>
+<%else%>
 <%= render "form", tweet: @tweet %>
-
+<%end%>
 <br>
 
 <div>
