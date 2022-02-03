@@ -1,8 +1,48 @@
-# frozen_string_literal: true
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+require 'faker'
+require 'open-uri'
+
+User.destroy_all
+Tweet.destroy_all
+# Liked_tweet.destroy_all
+
+puts 'Creating admin'
+admin = User.create(
+  username: 'admin',
+  email: 'admin@mail.com',
+  password: 'supersecret'
+)
+
+puts 'Seeding users'
+i = 1
+4.times do |member|
+  member = User.new
+  member.username = "@visitor#{i}"
+
+  member.email = "visitor#{i}@mail.com"
+  member.password = 'letmein'
+
+  puts "Member not created. Errors: #{member.errors.full_messages}" unless member.save
+  i += 1
+end
+
+puts 'Seeding tweets'
+users = User.all
+users.each do |user|
+  rand(1..2).times do
+    new_tweet = Tweet.new
+    new_tweet.user = user
+    new_tweet.body = Faker::Lorem.paragraph(sentence_count: rand(1..3))
+    puts "Tweet not created. Errors: #{new_tweet.errors.full_messages}" unless new_tweet.save
+  end
+end
+
+puts 'Seeding replies'
+tweets = Tweet.all
+tweets.each do |tweet|
+  rand(0..2).times do
+    new_reply = Tweet.new(parent_id: tweet.id)
+    new_reply.body = Faker::Lorem.paragraph(sentence_count: rand(1..3))
+    new_reply.user = User.all.sample
+    puts "Reply not created. Errors: #{new_reply.errors.full_messages}" unless new_reply.save
+  end
+end
